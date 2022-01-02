@@ -5,9 +5,11 @@ R
 
 Team Project MSCS Data Science Final:
 
+Bennet Botz, Hannah R
+
 
 
 
 Link to Final Project: 
 
-https://mscs264reiserbennet.shinyapps.io/MSCSFinal-ReiserBotz/#section-united-states-factors
+https://mscs264reiserbennet.shinyapps.io/MSCSFinal-ReiserBotz/#section-overview
