@@ -1,0 +1,130 @@
+---
+title: "Male_Death_info"
+author: "Bennet & Hannah"
+date: "5/11/2021"
+output: pdf_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(plotly)
+```
+
+## R Markdown
+
+##Scrape/Tidy
+
+```{r}
+
+#MALE DEATHS 2017
+#read in data, created tibble
+
+male_deaths <- read_html("https://www.cdc.gov/healthequity/lcod/men/2017/all-races-origins/index.htm")
+male_deaths <-html_nodes(male_deaths, css = "table")
+male_deaths<-html_table(male_deaths)[[1]]
+male_deaths<-as_tibble(male_deaths)
+Top10_Male_Deaths<-male_deaths%>%
+                  mutate(
+                    Percent= parse_number(Percent)
+                  )%>%
+                  rename(
+                    Male_Death_causes =`All races and origins, Male, All ages`
+                  )
+write_csv(Top10_Male_Deaths,"~/Mscs 264b S21/Project/Hannah and Bennet/Top10_Male_Deaths_table.csv")
+```
+
+```{r}
+#read in data, created tibble
+
+#MALE DEATHS BY AGE 2017
+male_death_age <- read_html("https://www.cdc.gov/healthequity/lcod/men/2017/all-races-origins/index.htm")
+male_deaths_age <-html_nodes(male_death_age, css = "table")
+male_death_age<-html_table(male_deaths_age)[[2]]
+male_death_age[1,]
+colnames(male_death_age) <-male_death_age[1,]
+male_death_age_tibble <-as_tibble(male_death_age[-1,])
+
+
+#pivot// tidying data 
+tidy1<-male_death_age_tibble%>%
+  pivot_longer(c( `1-19 years`, `20-44 years`,`45-64 years`,`65-84 years`,`85+ years`,`All ages`), names_to = "age", values_to = "type")%>%
+  separate(type, into = c("cause", "percent"), sep = "\n")%>%
+    mutate(percent= parse_number(percent))
+
+write_csv(tidy1,"~/Mscs 264b S21/Project/Hannah and Bennet/male_deaths_age.csv")
+
+
+#NOTES
+
+
+  #this is used in our shiny app// we tested it here 
+  draft3<-tidy1%>%
+  filter(age=="1-19 years")%>%
+  mutate (cause=fct_reorder(cause,percent),percent)%>%
+  ggplot(aes(x=cause))+ #aes(x=cause),fill=cause
+          geom_col(aes(y=percent)) +
+    scale_fill_manual(values= c("red","#999999","orange","blue","green", "pink", "black","grey","blue","green")) +
+          coord_flip()+
+    labs(
+      x = "Top 10 Causes of Death",
+      y = "Percent %"
+    )+
+   theme(
+     legend.title = element_blank(),
+     legend.position = "none")
+   ggplotly(draft3)
+   
+   
+
+```
+
+
+## Male Deaths By Race
+
+```{r}
+#read in data, created tibble
+male_death_race <- read_html("https://www.cdc.gov/healthequity/lcod/men/2017/byraceandhispanic/index.htm")
+male_deaths_race <- html_nodes(male_death_race, css = "table")
+male_death_race <- html_table(male_deaths_race)[[1]]
+male_death_race[1,]
+colnames(male_death_race) <- male_death_race[1,]
+male_death_race_tibble <- as_tibble(male_death_race[-1,])
+
+
+#pivot and tidy
+tidy_race_m <- male_death_race_tibble %>%
+  pivot_longer(c( `Non-Hispanic white`, `Non-Hispanic black`,`Non-Hispanic American Indian or Alaska Native`,`Non-Hispanic Asian or Pacific Islander`,`Hispanic`,`All races and origins`), names_to = "race", values_to = "type") %>%
+  separate(type, into = c("cause", "percent"), sep = "\n") %>%
+    mutate(percent= parse_number(percent))
+
+write_csv(tidy_race_m,"~/Mscs 264b S21/Project/Hannah and Bennet/male_deaths_race.csv")
+
+```
+
+```{r}
+#plot test
+
+  race_test_m <-tidy_race_m %>%
+  filter(race == "Non-Hispanic white") %>%
+  mutate(cause = fct_reorder(cause,percent), percent) %>%
+  ggplot(aes(x=cause))+
+          geom_col(aes(y=percent)) +
+          coord_flip()+
+    labs(
+      x = "Top 10 Causes of Death",
+      y = "Percent %"
+    )+
+   theme(
+     legend.title = element_blank(),
+     legend.position = "none")
+   ggplotly(race_test_m)
+  
+```
+
+
+
+
+

@@ -1,0 +1,338 @@
+---
+title: "MSCS Final"
+author: "Bennet & Hannah"
+runtime: shiny
+output:
+  flexdashboard::flex_dashboard: null
+  theme: lumen
+resource_files:
+- male_death_causes.Rmd
+- female_death_causes.Rmd
+- CDC_total_deaths.Rmd
+- US_map.Rmd
+- CDC_table.csv
+- Female_deaths_age.csv
+- female_deaths_race.csv
+- male_deaths_age.csv
+- male_deaths_race.csv
+- state_deaths.csv
+- Top10_Female_Deaths_table.csv
+- Top10_Male_Deaths_table.csv
+- deaths_states.csv
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r,include=FALSE, message=FALSE}
+library(tidyverse)
+library(plotly)
+library(maps)
+library(viridis)
+library(usmap)
+library(knitr)
+library(mapproj)
+us_states <- map_data("state")
+head(us_states)
+
+Top10_Male_CDC <- read_csv("Top10_Male_Deaths_table.csv")
+Top10_Female_CDC <- read_csv("Top10_Female_Deaths_table.csv")
+Top_Male_Deaths_Age <- read_csv("male_deaths_age.csv")
+Top_Female_Deaths_Age <- read_csv("Female_deaths_age.csv")
+population_deaths <- read_csv("state_deaths.csv")
+Top_Male_Deaths_Race <- read_csv("male_deaths_race.csv")
+Top_Female_Deaths_Race <- read_csv("female_deaths_race.csv")
+
+```
+
+Overview {data-icon="fa-info-circle"}
+==========================
+
+Column {data-width = 400}
+-------------------------
+
+#### Authors
+Bennet Botz - St. Olaf Class of 2024
+
+Hannah Reiser - St. Olaf Class of 2023
+
+#### Background Information
+
+- Leading cause of death in the U.S. in 1900 was pneumonia or influenza (202 per 100,000)
+- Leading cause of death in the U.S. in 2020 was heart disease (690,882 or 208 per 100,000)
+
+We thought it would be interesting to explore the leading causes of death in the United States and look at how the statistics vary based on gender, age, race, and (income*). We also looked at the breakdown of deaths in each state in recent years (1999-2017) to see if the patterns in the data have changed over time.
+
+*We were not able to find data that correlated deaths and income prior to the COVID-19 pandemic.
+
+#### Data Sources
+
+All of our data was collected from the Center for Disease Control (CDC) and was taken from before 2020 and the pandemic.
+
+https://www.cdc.gov
+
+
+
+#### Packages
+- shiny
+- flexdashboard
+- tidyverse
+- plotly
+
+
+Top 10 Causes of Death {data-icon="fa-sticky-note"}
+==========================
+Inputs {.sidebar}
+-------------------------
+
+```{r, include=FALSE, message=FALSE}
+#this is the top ten for males 
+male_chart<-ggplot(data = Top10_Male_CDC,aes(x=fct_reorder(Male_Death_causes,Percent),Percent), y=Percent) + 
+  geom_bar(stat = "identity")
+
+```
+
+```{r, include=FALSE, message=FALSE}
+#this is the top ten for females
+      female_chart<-ggplot(data = Top10_Female_CDC,aes(x=fct_reorder(Female_Death_causes,Percent),Percent), y=Percent)+ 
+        geom_bar(stat = "identity")
+
+```
+Column {data-height = 400}
+-------------------------
+
+#### Male
+```{r, echo=FALSE}
+renderPlotly({
+  Top10_Male_CDC%>%
+   rename(Cause = "Male_Death_causes")%>%
+  mutate (Cause=fct_reorder(Cause,Percent),Percent)%>%
+  ggplot(aes(x=Cause,Percent), y=Percent) + #color issue
+    geom_col() +
+    coord_flip()+
+    labs(
+      x = "Top 10 Causes of Death",
+      y = "Percent %"
+    )+
+    theme(legend.position = "none")
+})
+```
+
+#### Female
+
+```{r, echo=FALSE}
+renderPlotly({
+  Top10_Female_CDC%>%
+    rename(Cause = "Female_Death_causes")%>%
+  mutate (Cause=fct_reorder(Cause,Percent),Percent)%>%
+  ggplot(aes(x= Cause,y=Percent))+
+    geom_col() +
+    coord_flip()+
+    labs(
+      x = "Top 10 Causes of Death",
+      y = "Percent %"
+    )+
+    theme(legend.position = "none")
+})
+```
+
+
+This graph compares the ten most common causes of death between men and women.
+
+*Top 3 causes of unintentional injuries: Poisoning (drug overdose), motor vehicle accidents, falls
+
+
+Deaths Across Age Groups {data-icon="fa-sticky-note"}
+==========================
+
+<center>
+
+```{r, echo=FALSE}
+titlePanel("Deaths Across Age Groups ")
+
+inputPanel(
+   selectInput("barchartz", label = "Deaths Across Age Groups Male",
+    choices = c("1-19"= "1-19 years",  #see if you can fix this 
+                "20-44" = "20-44 years",
+                "45-64" = "45-64 years",
+                "65-84" = "65-84 years",
+                "85+" = "85+ years"))
+)
+```
+
+#### Male
+```{r, echo=FALSE}
+renderPlotly({
+  test<-Top_Male_Deaths_Age%>%
+  filter(age==input$barchartz)%>%
+  mutate (cause=fct_reorder(cause,percent),percent)%>%
+  ggplot(aes(x=cause))+#color issue! (replace with deaths across age groups)
+  geom_col(aes(y=percent)) +
+  coord_flip() +
+    labs(
+      x = "Cause of Death",
+      y = "Percent %"
+    )+
+    theme(legend.position = "none")
+})
+```
+
+#### Female
+```{r, echo=FALSE}
+renderPlotly({
+    test1<-Top_Female_Deaths_Age %>%
+    filter(age == input$barchartz) %>%
+    mutate (cause=fct_reorder(cause,percent),percent)%>%
+    ggplot(aes(x=cause)) + #color issue!(replace with deaths across age groups)
+    geom_col(aes(y=percent))+
+    coord_flip() +
+    labs(
+      x = "Cause of Death",
+       y = "Percent %"
+    ) +
+    theme(legend.position = "none")
+    ggplotly(test1)
+})
+```
+
+
+This graph shows the most common cause of death by age group for men and women.
+
+*Top 3 causes of unintentional injuries: Poisoning (drug overdose), motor vehicle accidents, falls
+
+United States Factors {data-icon="fa-sticky-note"}
+==========================
+<center>
+
+```{r, echo=FALSE}
+
+titlePanel("Deaths Across the United States")
+
+inputPanel(
+   selectInput("barchartcause1", label = "Deaths Across United States",
+    choices = c("All causes" = "All causes",
+                "Unintentional injuries"= "Unintentional injuries", 
+                "Alzheimer's disease" = "Alzheimer's disease",
+                "Cancer" = "Cancer",
+                "Chronic lower respiratory diseases" = "CLRD",
+                "Diabetes" = "Diabetes",
+                "Stroke" = "Stroke",
+                "Heart disease" ="Heart disease",
+                "Influenza and pneumonia" = "Influenza and pneumonia",
+                "Suicide" = "Suicide",
+                "Kidney disease" = "Kidney disease"
+                )),
+    sliderInput("year1", label = "Year",
+             min = 1999, max = 2017, value = 1999, step = 1, sep = "")
+)
+```
+Deaths by Cause in Every State (1999-2017)
+-------------------------
+```{r, echo=FALSE}
+renderPlotly({
+     population_deaths%>% 
+     filter(Cause_Name ==input$barchartcause1)%>%
+    filter(Year ==input$year1)%>%
+     right_join(us_states, by =c("state" = "region")) %>%
+     ggplot(mapping = aes(x = long, y = lat,
+                          group = group, State=state, age_death_rate = Age_Adjusted_Death_Rate)) + 
+     geom_polygon(aes(fill = Deaths), color = "black")+
+    coord_map() +
+    theme_void() + 
+    scale_fill_viridis(option="turbo")
+   
+})
+```
+
+Map displaying the breakdown of the number of deaths by cause in a select year (1999-2017) within each state.
+
+#### Notes
+Age-adjusted rate: a way to make fairer comparisons between groups with different age distributions, (e.g., a state with a higher percentage of elderly people may have a higher rate of death than a state with a younger population because the elderly are more likely to die). Age adjustment can make the statistics between states more comparable. <br/>
+
+Age-adjusted death rates (per 100,000 population) are based on the 2000 U.S. standard population. Populations used for computing death rates for 2011-2017  are postcensal estimates based on the 2010 census, estimated as of July 1,     2010. <br />
+
+Deaths Across Different Race and Hispanic origins {data-icon="fa-sticky-note"}
+==========================
+Inputs {.sidebar}
+-------------------------
+
+```{r, echo=FALSE}
+titlePanel("Deaths Across Different Race and Hispanic origins")
+
+inputPanel(
+   selectInput("barchartw", label = "Deaths Across Different Race and Hispanic origins",
+    choices = c("Non-Hispanic white" = "Non-Hispanic white",   
+                "Non-Hispanic black" = "Non-Hispanic black",
+                "Non-Hispanic American Indian or Alaska Native" = "Non-Hispanic American Indian or Alaska Native",
+                "Non-Hispanic Asian or Pacific Islander" = "Non-Hispanic Asian or Pacific Islander",
+                "Hispanic" = "Hispanic",
+                "All races and origins" = "All races and origins")),
+   checkboxInput("male_checkw", "Male", value = FALSE),
+   checkboxInput("Female_checkw", "Female", value = FALSE)
+   
+)
+```
+Column  
+-------------------------
+```{r, echo=FALSE}
+renderPlotly({ 
+   if(input$male_checkw){
+  race_m<-Top_Male_Deaths_Race %>%
+  filter(race == input$barchartw) %>%
+  mutate(cause = fct_reorder(cause,percent,.desc = TRUE), percent) %>%
+  ggplot(aes(x = cause)) +
+  geom_col(aes(y=percent)) +
+  #coord_flip() +
+    labs(
+      x = "Cause of Death",
+      y = "Percent %"
+    ) +
+    theme(legend.position = "none")}
+  else if(input$Female_checkw){
+    race_f<-Top_Female_Deaths_Race %>%
+    filter(race == input$barchartw) %>%
+    mutate(cause = fct_reorder(cause,percent,.desc = TRUE), percent) %>%
+    ggplot(aes(x = cause)) +
+    geom_col(aes(y = percent)) +
+   # coord_flip() +
+    labs(
+      x = "Cause of Death",
+       y = "Percent %"
+    ) +
+    theme(legend.position = "none")
+    ggplotly(race_f)}
+     
+
+})
+
+```
+
+This graph shows the percent of deaths across different races in the United States.
+
+*Top 3 causes of unintentional injuries: Poisoning (drug overdose), motor vehicle accidents, falls
+
+Conclusion {data-icon="fa-info-circle"}
+==========================
+
+Why is heart disease the leading cause of death?  <br />
+
+- high blood pressure
+- high blood cholesterol
+- smoking
+- diabetes
+- overweight and obesity
+- excessive alcohol consumption <br />
+
+Patterns and trends <br />
+
+- Improvements in sanitation and public health in addition to the development of vaccines and medical treatments such as antibiotics, has led to dramatic declines in deaths from infectious diseases, which contributed to the top three causes of death in 1900. Mortality from all causes declined 54% between 1900 and 2010. 
+- From 2019-2020, deaths from heart disease increased by 4.8%, unintentional injury by 11.1%, Alzheimer’s 9.8%, and diabetes by 15.4%. Deaths from chronic lower respiratory disease declined by 3.4% and suicide deaths declined by 5.6%.
+- COVID-19 was the third leading cause of deaths in the U.S. in 2020 behind heart disease and cancer. Deaths from COVID-19 should begin to decrease as more people get vaccinated, but deaths from heart disease and cancer will likely continue to increase and they will remain the leading causes of death in the United States.
+
+#### Surprising 
+Most surprising was how hard it was to find data on income and death. The CDC doesn't have data on how income correlates to cause of death. We were unable to find this data anywhere for the years before 2020. There are now data on income levels and death rates because of COVID-19 from other sources, but the CDC is still using indirect classification (e.g., percentage of population in poverty) to indicate income levels.
+
+#### Proudest Accomplishment 
+Reflecting on our project, we thought the map was one of our strongest components. We collected and assembled a great deal of data and displayed it effectively in one graphic. It is very interesting to be able to look at how the death numbers differ by state over time. In addition, viewing the age-adjusted death rate gives us valuable information on how each state is affected by a particular cause of death.
+

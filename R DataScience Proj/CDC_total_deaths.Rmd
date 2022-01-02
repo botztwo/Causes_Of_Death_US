@@ -1,0 +1,66 @@
+---
+title: "Scraping CDC"
+author: "Hannah & Bennet"
+date: "5/6/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(stringr)
+library(rvest)
+```
+
+
+## Sources (not data we read in, just information and statistics we collected for conclusion)
+
+https://www.cdc.gov/heartdisease/facts.htm
+Heart disease fact page, US.
+
+https://www.cdc.gov/tobacco/data_statistics/fact_sheets/fast_facts/index.htm
+Smoking numbers, US.
+
+https://www.cdc.gov/obesity/data/prevalence-maps.html
+Obesity displayed on US map, used to observe patterns
+
+https://www.ncdemography.org/2014/06/16/mortality-and-cause-of-death-1900-v-2010/
+1900 vs 2010 mortality numbers, US.
+
+https://jamanetwork.com/journals/jama/fullarticle/2778234
+Death numbers, 2015-2020, US.
+
+https://www.safetynewsalert.com/number-of-accidental-deaths-hits-new-high/
+What are accidental death causes?
+
+https://www.cdc.gov/nchs/fastats/obesity-overweight.htm
+Obesity and overweight numbers, US.
+
+https://www.who.int/news-room/fact-sheets/detail/the-top-10-causes-of-death
+Top causes of death globally, breakdown by income level.
+
+## CDC Total Deaths
+
+
+```{r}
+#creating a df from CDC chart of top 10 causes of death in U.S.
+
+CDC <- read_html("https://www.cdc.gov/nchs/fastats/leading-causes-of-death.htm")
+CDC_table <- data.frame(cause = c("Heart disease", "Cancer", "Accidents", "Chronic lower respiratory diseases", "Stroke", "Alzheimer's disease", "Diabetes", "Nephritis, nephrotic syndrom, and nephrosis", "Influenza and pneumonia", "Suicide"),
+                 deaths = c("659,041", "599,601", "173,040", "156,979", "150,005", "121,499", "87,647", "51,565", "49,783", "47,511"))
+
+#creating csv from top 10 causes of death data
+write_csv(CDC_table,"~/Mscs 264b S21/Project/Hannah and Bennet/CDC_table.csv")
+
+
+```
+
+```{r}
+#reading csv, converting data into tibble
+CDC_chart <- read_csv("~/Mscs 264b S21/Project/Hannah and Bennet/CDC_table.csv")
+
+#initial test graph
+CDC_chart %>%
+  ggplot() +
+  geom_point(mapping = aes(x = cause, y = deaths))
+```
+

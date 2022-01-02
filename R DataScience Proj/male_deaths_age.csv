@@ -1,0 +1,61 @@
+Rank2,age,cause,percent
+1,1-19 years,Unintentional injuries,33.8
+1,20-44 years,Unintentional injuries,38.9
+1,45-64 years,Cancer,24.7
+1,65-84 years,Cancer,27.5
+1,85+ years,Heart disease,30.1
+1,All ages,Heart disease,24.2
+2,1-19 years,Suicide,17.2
+2,20-44 years,Suicide,13.8
+2,45-64 years,Heart disease,23.7
+2,65-84 years,Heart disease,24.7
+2,85+ years,Cancer,14.8
+2,All ages,Cancer,21.9
+3,1-19 years,Homicide,14.7
+3,20-44 years,Heart disease,9.1
+3,45-64 years,Unintentional injuries,10.1
+3,65-84 years,Chronic lower respiratory diseases,6.9
+3,85+ years,Alzheimer’s disease,6.4
+3,All ages,Unintentional injuries,7.6
+4,1-19 years,Cancer,7.3
+4,20-44 years,Homicide,9.1
+4,45-64 years,Chronic liver disease,4.4
+4,65-84 years,Stroke,4.6
+4,85+ years,Stroke,6
+4,All ages,Chronic lower respiratory diseases,5.2
+5,1-19 years,Birth defects,3.9
+5,20-44 years,Cancer,6.4
+5,45-64 years,Diabetes,4
+5,65-84 years,Diabetes,3.7
+5,85+ years,Chronic lower respiratory diseases,5.6
+5,All ages,Stroke,4.3
+6,1-19 years,Heart disease,2.8
+6,20-44 years,Chronic liver disease,2.2
+6,45-64 years,Suicide,3.8
+6,65-84 years,Unintentional injuries,3
+6,85+ years,Unintentional injuries,3
+6,All ages,Diabetes,3.2
+7,1-19 years,Influenza and pneumonia,1.1
+7,20-44 years,Diabetes,1.7
+7,45-64 years,Chronic lower respiratory diseases,3.4
+7,65-84 years,Alzheimer’s disease,2.4
+7,85+ years,Influenza and pneumonia,2.9
+7,All ages,Alzheimer’s disease,2.6
+8,1-19 years,Chronic lower respiratory diseases,1.1
+8,20-44 years,Stroke,1.3
+8,45-64 years,Stroke,3.1
+8,65-84 years,Kidney disease,2
+8,85+ years,Kidney disease,2.3
+8,All ages,Suicide,2.6
+9,1-19 years,Stroke,1
+9,20-44 years,HIV disease,0.9
+9,45-64 years,Kidney disease,1.4
+9,65-84 years,Influenza and pneumonia,1.8
+9,85+ years,Parkinson’s disease,2.2
+9,All ages,Influenza and pneumonia,1.8
+10,1-19 years,Septicemia,0.6
+10,20-44 years,Influenza and pneumonia,0.7
+10,45-64 years,Septicemia,1.4
+10,65-84 years,Parkinson’s disease,1.8
+10,85+ years,Diabetes,2.2
+10,All ages,Chronic liver disease,1.8

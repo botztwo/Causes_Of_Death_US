@@ -1,0 +1,61 @@
+Rank2,race,cause,percent
+1,Non-Hispanic white,Heart disease,24.7
+1,Non-Hispanic black,Heart disease,23.7
+1,Non-Hispanic American Indian or Alaska Native,Heart disease,19.4
+1,Non-Hispanic Asian or Pacific Islander,Cancer,24.8
+1,Hispanic,Heart disease,20.3
+1,All races and origins,Heart disease,24.2
+2,Non-Hispanic white,Cancer,22.4
+2,Non-Hispanic black,Cancer,20.2
+2,Non-Hispanic American Indian or Alaska Native,Cancer,16.4
+2,Non-Hispanic Asian or Pacific Islander,Heart disease,22.6
+2,Hispanic,Cancer,19.4
+2,All races and origins,Cancer,21.9
+3,Non-Hispanic white,Unintentional injuries,7.2
+3,Non-Hispanic black,Unintentional injuries,7.9
+3,Non-Hispanic American Indian or Alaska Native,Unintentional injuries,13.8
+3,Non-Hispanic Asian or Pacific Islander,Stroke,6.6
+3,Hispanic,Unintentional injuries,11.5
+3,All races and origins,Unintentional injuries,7.6
+4,Non-Hispanic white,Chronic lower respiratory diseases,5.9
+4,Non-Hispanic black,Homicide,5
+4,Non-Hispanic American Indian or Alaska Native,Diabetes,5.9
+4,Non-Hispanic Asian or Pacific Islander,Unintentional injuries,5.6
+4,Hispanic,Stroke,4.7
+4,All races and origins,Chronic lower respiratory diseases,5.2
+5,Non-Hispanic white,Stroke,4.1
+5,Non-Hispanic black,Stroke,4.9
+5,Non-Hispanic American Indian or Alaska Native,Chronic liver disease,5.3
+5,Non-Hispanic Asian or Pacific Islander,Diabetes,4.3
+5,Hispanic,Diabetes,4.7
+5,All races and origins,Stroke,4.3
+6,Non-Hispanic white,Alzheimer’s disease,2.9
+6,Non-Hispanic black,Diabetes,4.3
+6,Non-Hispanic American Indian or Alaska Native,Suicide,4.3
+6,Non-Hispanic Asian or Pacific Islander,Chronic lower respiratory diseases,3.2
+6,Hispanic,Chronic liver disease,4
+6,All races and origins,Diabetes,3.2
+7,Non-Hispanic white,Diabetes,2.8
+7,Non-Hispanic black,Chronic lower respiratory diseases,3.2
+7,Non-Hispanic American Indian or Alaska Native,Chronic lower respiratory diseases,4.2
+7,Non-Hispanic Asian or Pacific Islander,Influenza and pneumonia,3.1
+7,Hispanic,Suicide,2.9
+7,All races and origins,Alzheimer’s disease,2.6
+8,Non-Hispanic white,Suicide,2.7
+8,Non-Hispanic black,Kidney disease,2.6
+8,Non-Hispanic American Indian or Alaska Native,Stroke,3.1
+8,Non-Hispanic Asian or Pacific Islander,Suicide,2.7
+8,Hispanic,Chronic lower respiratory diseases,2.5
+8,All races and origins,Suicide,2.6
+9,Non-Hispanic white,Influenza and pneumonia,1.9
+9,Non-Hispanic black,Septicemia,1.7
+9,Non-Hispanic American Indian or Alaska Native,Homicide,1.9
+9,Non-Hispanic Asian or Pacific Islander,Alzheimer’s disease,2.1
+9,Hispanic,Homicide,2.4
+9,All races and origins,Influenza and pneumonia,1.8
+10,Non-Hispanic white,Chronic liver disease,1.7
+10,Non-Hispanic black,Hypertension,1.6
+10,Non-Hispanic American Indian or Alaska Native,Influenza and pneumonia,1.8
+10,Non-Hispanic Asian or Pacific Islander,Kidney disease,2.1
+10,Hispanic,Alzheimer’s disease,2.1
+10,All races and origins,Chronic liver disease,1.8

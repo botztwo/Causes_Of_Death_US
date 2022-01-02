@@ -1,0 +1,82 @@
+---
+title: "US_map"
+author: "Hannah & Bennet"
+date: "5/13/2021"
+output: pdf_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse) 
+library(stringr)
+library(ggmap)
+library(leaflet)
+library(maps)
+us_states <- map_data("state")
+head(us_states)
+
+
+city_pop<-read_csv("~/Mscs 264b S21/Project/Hannah and Bennet/population_data.csv")
+state_pop<-read_csv("~/Mscs 264b S21/Project/Hannah and Bennet/state_pop_tibble2.csv")
+deaths_across_states<-read_csv("~/Mscs 264b S21/Project/Hannah and Bennet/deaths_states.csv")
+```
+
+#stats on minnesota 
+https://www.cdc.gov/nchs/pressroom/states/minnesota/mn.htm
+
+#states life expentancy// make this as viewable and then a selct to see all the deaths with a drop down 
+https://www.cdc.gov/nchs/pressroom/sosmap/life_expectancy/life_expectancy.htm
+
+#stats of the states 
+https://www.cdc.gov/nchs/pressroom/stats_of_the_states.htm
+
+#pdf that is hard but helpful
+https://www.cdc.gov/nchs/data/dvs/LCWK9_2015.pdf
+
+#remake this map, selct with dealths as optiosn and then can choose what you want to see. 
+https://www.cdc.gov/nchs/data-visualization/mortality-leading-causes/#data-tables
+
+
+
+```{r}
+#deaths across all states code 
+#turn this in with project
+
+state_deaths<-deaths_across_states%>%
+  #rename(state ="State") %>%
+  select(Year, `Cause Name`,State,Deaths,`Age-adjusted Death Rate`)%>%#`Age-adjusted Death Rate`
+  rename(state ="State",Cause_Name =`Cause Name`,Age_Adjusted_Death_Rate=`Age-adjusted Death Rate`)%>%#,Age_Adjusted_Death_Rate=`Age-adjusted Death Rate`
+mutate(state = str_to_lower(state))
+write_csv(state_deaths,"~/Mscs 264b S21/Project/Hannah and Bennet/state_deaths.csv")
+
+
+
+#this tibble is good // not using the join atm//has not been useful yet
+pop_deaths<-state_deaths %>%
+         right_join(state_pop, by =c("State"))%>%
+        rename(state ="State")
+
+```
+
+
+```{r}
+#notes
+#code used in shiny 
+test1<-state_deaths1%>%
+  filter(Cause_Name == "Unintentional injuries", Year ==1999) %>%
+  right_join(us_states, by =c("state" = "region")) %>%
+  rename(region = state) %>%
+  ggplot(mapping = aes(x = long, y = lat,
+                          group = group,State=state))+ 
+  geom_polygon(aes(fill = Deaths), color = "black")
+  ggplotly(test1)
+
+
+```
+
+
+
+#every top cause of death 
+https://www.pbs.org/newshour/health/heres-a-map-that-shows-each-states-top-cause-of-death
